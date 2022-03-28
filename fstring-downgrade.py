@@ -1,8 +1,11 @@
+#!/usr/bin/env python3
 import sys
 import re
+import shutil
 
-
-out = open(sys.argv[1] + '-nofstrings.py', 'w')
+in_name = sys.argv[1]
+out_name = in_name + '-nofstrings.py'
+out = open(out_name, 'w')
 for fullline in open(sys.argv[1]):
 	linestart = 0
 	#print("line: '%s'" % (fullline))
@@ -17,7 +20,7 @@ for fullline in open(sys.argv[1]):
 		elif 'f"' in line:
 			start = 'f"'
 			end = '"'
-		
+
 		istart = line.index(start)
 		iinside = istart + len(start)
 		if end not in line[iinside:]:
@@ -44,4 +47,7 @@ for fullline in open(sys.argv[1]):
 			print("skipping problematic line: '%s'" % line.rstrip())
 			out.write(line)
 			linestart += len(line)
-		
+
+rewrite = True
+if rewrite:
+	shutil.move(out_name, in_name)
